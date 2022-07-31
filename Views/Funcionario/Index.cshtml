@@ -1,0 +1,174 @@
+﻿@model PaginacaoViewModel<IPG_Funcionarios.Models.Funcionario>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewData["Title"] = "Index";
+    string views_name = Context.Request.Path.ToString().Replace("/", "");
+    int entries_per_page_min = 10;
+    int entries_per_page_max = 100;
+}
+
+
+    
+    <div class="main-panel view-html" style="width:100%;">
+
+    <div class="content-wrapper">
+        <div class="page-header">
+
+            <div class="table-responsive">
+                <div class="row">
+
+
+                    <div class="col">
+
+                        @if (true)
+                        {
+                            <div class="alert alert-success" role="alert" id="auto-hide">
+                                <strong>Funcionário!</strong> Lista dos Funcionários.
+                            </div>
+                        }
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                                            <div class="row">
+                                                <div class="col-sm-12 ctrl-a">
+                                                    <a asp-action="Create" class="c-btn c-btn-primary mt-3">Adicionar</a>
+                                                    <select>
+                                                        @for (int i = entries_per_page_min; i <= entries_per_page_max; i += entries_per_page_min)
+                                                        {
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                        <option value="-1">Todas</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"></div></div>
+                                            </div>
+
+                                            <table class="table">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <a asp-action="Index" asp-route-ordem="@ViewData["NomeParm"]" asp-route-filtroAtual="@ViewData["filtroAtual"]">Nome</a>
+
+                                                        </th>
+                                                        <th> Telefone </th>
+                                                        <th> Email </th>
+                                                        <th> Genero </th>
+                                                        
+                                                        <th>
+                                                            <a asp-action="Index" asp-route-ordem="@ViewData["DataParm"]" asp-route-filtroAtual="@ViewData["filtroAtual"]">Data de Nascimento</a>
+
+                                                        </th>
+                                                        <th> &nbsp; </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Nome)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Telefone)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Email)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Genero)
+                                                            </td>
+                                                        
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.DataNascionento)
+                                                            </td>
+
+                                                            <td>
+                                                                <a asp-action="Edit" asp-route-id="@item.FuncionarioId" class="badge badge-pill badge-warning">Edit</a>
+                                                                <a asp-action="Details" asp-route-id="@item.FuncionarioId" class="badge badge-pill badge-info">Details</a>
+                                                                <a asp-action="Delete" asp-route-id="@item.FuncionarioId" class="badge badge-pill badge-danger">Delete</a>
+
+
+                                                        </tr>
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            @{
+                                                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                                                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                                            }
+
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-center">
+                                                    <li class="page-item ">
+                                                        <a asp-action="Index"
+                                                           asp-route-ordem="@ViewData["ordemAtual"]"
+                                                           asp-route-pagina="@(Model.PageIndex - 1)"
+                                                           asp-route-filtroAtual="@ViewData["filtroAtual"]"
+                                                           class="btn btn-default @prevDisabled">
+                                                            Anterior
+                                                        </a>
+                                                    </li>
+
+                                                    <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                          <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                        -->
+                                                    <li class="page-item">
+                                                        <a asp-action="Index"
+                                                           asp-route-ordem="@ViewData["ordemAtual"]"
+                                                           asp-route-pagina="@(Model.PageIndex + 1)"
+                                                           asp-route-filtroAtual="@ViewData["filtroAtual"]"
+                                                           class="btn btn-default @nextDisabled">
+                                                            Próximo
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col">
+        <div class="ctrl">
+            <a asp-controller="Home" asp-action="" class="badge badge-pill badge-info mt-2">Voltar</a>
+
+            <form asp-action="Index" method="get">
+                <div class="form-actions no-color mt-2">
+                    <p>
+                        @using (Html.BeginForm())
+                        {
+                        <p>
+                            Procurar por nome: @Html.TextBox("filtro")
+                            <input type="submit" value="Procurar" />
+                            |
+                            <a asp-action="Index">Retornar para lista</a>
+                        </p>
+                    }
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
