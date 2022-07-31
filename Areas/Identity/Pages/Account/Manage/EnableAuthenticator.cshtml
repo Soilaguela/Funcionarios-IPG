@@ -1,0 +1,46 @@
+﻿@page
+@model EnableAuthenticatorModel
+@{
+    ViewData["Title"] = "Configure authenticator app";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+    ViewData["pagetype"] = "5";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title"> &nbsp;@ViewData["Title"]</h4>
+        <form id="send-code" method="post">
+            <div role="application" class="wizard clearfix vertical" id="steps-uid-1">
+                <div class="steps clearfix">
+                    <ul role="tablist">
+                        <partial name="_PersonalSettingsListMenu" />
+                    </ul>
+                </div>
+                <div class="content clearfix">
+                    <section id="steps-uid-1-p-0" role="tabpanel" aria-labelledby="steps-uid-1-h-0" class="body current" aria-hidden="false">
+                        <div class="form-group">
+                            <label asp-for="Input.Code" class="control-label">Verification Code</label>
+                            <input asp-for="Input.Code" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="Input.Code" class="text-danger"></span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div style="margin-right:2%;">
+                    <button id="update-profile-button" type="submit"
+                            class="c-btn c-btn-primary w-25 float-right">
+                        Verificar
+                    </button>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

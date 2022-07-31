@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+}
+
+<div class="main-panel view-html">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                <a asp-controller="Home" asp-action=""><i class="mdi mdi-keyboard-backspace"></i> Voltar </a>
+            </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Identity</li>
+                    <li class="breadcrumb-item">Account</li>
+                    <li class="breadcrumb-item">Manage</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
